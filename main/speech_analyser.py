@@ -10,11 +10,9 @@ def ban_check(transcript: str)->bool:
         transcript: The written form of the speech
     """
     bannedWords = ["UM", "LIKE", "UH"]
-
     transcript = transcript.split()
     for word in transcript:
         for banned_word in bannedWords:
             if(word.casefold() == banned_word.casefold()):
                 return True
     return False
-        

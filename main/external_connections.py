@@ -14,11 +14,11 @@ class ExternalConnections:
         addr: The client's ip address
     """
 
-    def __init__(self, host, port):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((host, port))
+    def __init__(self, mac_addr):
+        self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, proto=socket.BTPROTO_SCO)
+        self.sock.bind(mac_addr)
         self.sock.listen(1)
-        print(f'Listening on host {host} and port {port}')
+        print(f'Listening on mac address {mac_addr}')
         self.conn, self.addr = self.sock.accept()
         print(f'Connection with {self.addr} successfully established')
 
@@ -27,16 +27,15 @@ class ExternalConnections:
         self.sock.close()
 
 
-    def recieveData(self, bufsize=1024):
+    def receive(self, bufsize=1024):
         """Gets and returns data from connection"""
-        while True:
-            packet = self.sock.recv(bufsize)
-            if not packet:
-                return None
-            return packet
+        packet = self.sock.recv(bufsize)
+        if not packet:
+            return None
+        return packet
 
 
-    def sendData(self, data):
+    def send(self, data):
         """Sends data to client"""
         self.sock.sendall(data)
         print("Data has been sent")

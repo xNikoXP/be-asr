@@ -13,7 +13,7 @@ class Wav2Vec2:
         self.model = self.bundle.get_model().to(self.device)
         print(self.model.__class__)
 
-    def decode(self, waveform, sample_rate):
+    def decode(self, waveform, sample_rate)->str:
         with torch.inference_mode():
             emission, _ = self.model(waveform)
         decoder = self.GreedyCTCDecoder(labels=self.bundle.get_labels())
