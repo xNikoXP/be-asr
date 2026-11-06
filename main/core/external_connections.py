@@ -1,5 +1,6 @@
 import socket
 
+
 class ExternalConnections:
     """Class that deals with external_connections
 
@@ -15,16 +16,22 @@ class ExternalConnections:
     """
 
     def __init__(self, mac_addr):
+        self.mac_addr = mac_addr
         self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, proto=socket.BTPROTO_SCO)
         self.sock.bind(mac_addr)
-        self.sock.listen(1)
-        print(f'Listening on mac address {mac_addr}')
-        self.conn, self.addr = self.sock.accept()
-        print(f'Connection with {self.addr} successfully established')
-
+        self.conn, self.addr = None, None
+        
 
     def __del__(self):
         self.sock.close()
+        self.conn.close()
+        
+
+    def connect(self):
+        self.sock.listen()
+        print(f'Listening on mac address {self.mac_addr}')
+        self.conn, self.addr = self.sock.accept()
+        print(f'Connection with {self.addr} successfully established')        
 
 
     def receive(self, bufsize=1024):

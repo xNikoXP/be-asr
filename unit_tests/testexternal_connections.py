@@ -7,7 +7,9 @@ from unittest.mock import patch
 
 from main.external_connections import ExternalConnections as EC
 
+
 class TestExternalConnections(TestCase):
+
     
     def test_receive(self):
         with patch.object(EC, "__init__", return_value=None):
@@ -18,6 +20,7 @@ class TestExternalConnections(TestCase):
         ec.sock = Mock()
         ec.sock.recv.return_value = packet
         assert ec.receive() == packet
+
 
     def test_receive_null(self):
         with patch.object(EC, "__init__", return_value=None):
